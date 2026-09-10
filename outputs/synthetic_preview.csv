@@ -1,0 +1,11 @@
+age,workclass,fnlwgt,education,education-num,marital-status,occupation,relationship,race,sex,capital-gain,capital-loss,hours-per-week,native-country,income
+56,Self-emp-inc,111014.0,Some-college,12,Married-civ-spouse,Adm-clerical,Unmarried,White,Male,270,2220,31,United-States,<=50K
+21,Private,95432.0,Some-college,13,Never-married,Handlers-cleaners,Not-in-family,White,Male,17891,2353,45,Puerto-Rico,<=50K
+39,Private,51973.0,Bachelors,8,Married-civ-spouse,Craft-repair,Other-relative,White,Male,933,2367,40,United-States,<=50K
+52,Private,219340.0,Bachelors,13,Never-married,Craft-repair,Own-child,White,Male,16878,1696,35,United-States,<=50K
+66,Private,118863.0,Some-college,4,Married-civ-spouse,Machine-op-inspct,Not-in-family,White,Male,53376,1365,52,United-States,<=50K
+41,Private,272263.0,Bachelors,11,Married-civ-spouse,Adm-clerical,Wife,White,Male,94504,1463,38,United-States,>50K
+41,Private,35773.0,Assoc-acdm,7,Never-married,Craft-repair,Not-in-family,White,Male,13552,2415,36,United-States,<=50K
+22,Local-gov,24520.0,Some-college,9,Never-married,Other-service,Own-child,White,Male,63508,2075,40,United-States,<=50K
+45,Federal-gov,29784.0,Bachelors,10,Never-married,Transport-moving,Other-relative,Black,Male,25468,1720,45,United-States,<=50K
+27,Private,384141.0,HS-grad,6,Married-civ-spouse,Tech-support,Husband,Black,Female,27497,1699,53,United-States,<=50K
