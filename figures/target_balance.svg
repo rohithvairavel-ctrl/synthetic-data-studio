@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Synthetic Data Studio target balance figure - see local figures/target_balance.svg after run_experiment -->
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">
+  <text x="20" y="30" font-size="14">Target class balance (real vs synth)</text>
+  <text x="20" y="60" font-size="12">Regenerate with: python scripts/run_experiment.py</text>
+  <rect x="40" y="80" width="80" height="80" fill="#4C72B0"/>
+  <rect x="160" y="100" width="80" height="60" fill="#DD8452"/>
+  <text x="40" y="180" font-size="11">&lt;=50K / &gt;50K shares</text>
+</svg>
