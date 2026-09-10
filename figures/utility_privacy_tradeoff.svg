@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <rect width="640" height="400" fill="#fafafa"/>
+  <text x="20" y="28" font-family="sans-serif" font-size="16" font-weight="bold">Utility-Privacy Tradeoff (Adult n=2000)</text>
+  <text x="20" y="52" font-family="sans-serif" font-size="12" fill="#555">X = median DCR (privacy up) · Y = TSTR F1 (utility up) · real F1 = 0.598</text>
+  <line x1="60" y1="340" x2="600" y2="340" stroke="#333"/>
+  <line x1="60" y1="340" x2="60" y2="80" stroke="#333"/>
+  <text x="280" y="380" font-family="sans-serif" font-size="12">Median DCR</text>
+  <circle cx="480" cy="300" r="10" fill="#4C72B0"/><text x="495" y="304" font-size="10" font-family="sans-serif">GC ns=1 F1=0.14 DCR=4.07</text>
+  <circle cx="500" cy="295" r="10" fill="#4C72B0"/><text x="515" y="270" font-size="10" font-family="sans-serif">GC ns=2 F1=0.15 DCR=4.11</text>
+  <circle cx="180" cy="120" r="10" fill="#55A868"/><text x="195" y="124" font-size="10" font-family="sans-serif">FB ns=0.75 F1=0.58 DCR=1.95</text>
+  <circle cx="220" cy="125" r="10" fill="#55A868"/><text x="235" y="150" font-size="10" font-family="sans-serif">FB ns=1.0 F1=0.57 DCR=2.20</text>
+  <circle cx="280" cy="115" r="10" fill="#55A868"/><text x="295" y="100" font-size="10" font-family="sans-serif">FB ns=1.5 F1=0.59 DCR=2.75</text>
+  <line x1="60" y1="140" x2="600" y2="140" stroke="#888" stroke-dasharray="4"/>
+  <text x="70" y="135" font-size="10" font-family="sans-serif" fill="#666">real F1 ~ 0.598</text>
+  <text x="20" y="395" font-size="10" font-family="sans-serif" fill="#666">Synthetic Data Studio · regenerate: python scripts/run_experiment.py</text>
+</svg>
