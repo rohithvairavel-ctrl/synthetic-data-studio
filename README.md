@@ -48,8 +48,8 @@ python scripts/run_experiment.py --max-rows 2000 --ctgan
 ## Dataset
 
 - **Adult / Census Income** via `sklearn.datasets.fetch_openml("adult", version=2)` (UCI mirror fallback).
-- Scripts download the full CSV to `data/raw/adult.csv`.
-- A **200-row sample** is committed at `data/raw/adult_sample.csv` for offline demos.
+- Scripts download the full CSV to `data/raw/adult.csv` (gitignored).
+- An **80-row sample** is committed at `data/raw/adult_sample.csv` for offline demos (`download_data.py` can rewrite a 200-row sample).
 - Experiments default to a stratified subsample (e.g. 2,000 rows) for fast portfolio runs.
 
 ---
@@ -57,27 +57,23 @@ python scripts/run_experiment.py --max-rows 2000 --ctgan
 ## Generators
 
 ### 1. SDV GaussianCopula (preferred)
-Fits marginals + a Gaussian copula for dependence (`sdv.single_table.GaussianCopulaSynthesizer`). A `noise_scale > 1` knob adds mild isotropic noise to numeric columns after sampling (privacy ↔ utility dial).
+Fits marginals + a Gaussian copula for dependence. A `noise_scale > 1` knob adds mild isotropic noise to numeric columns after sampling.
 
 ### 2. SDV CTGAN (optional)
-GAN-based synthesizer; slower, enabled with `--ctgan`.
+GAN-based synthesizer; slower on CPU; enabled with `--ctgan`.
 
 ### 3. Fallback — `FallbackHistogramMVN` (`src/generators.py`)
-Used automatically if SDV is missing, or selected as `method="fallback"`:
-
 1. Label-encode categoricals + target  
 2. `IterativeImputer` for robustness  
-3. Fit a **multivariate normal** on standardized features (covariance scaled by `noise_scale`)  
-4. Sample; map discrete columns via a mix of MVN rounding and **empirical histogram** draws  
+3. Fit a **multivariate normal** on standardized features (covariance × `noise_scale`)  
+4. Sample; discrete cols via MVN rounding + **empirical histogram** mix  
 5. Clip numerics to train quantiles  
-
-This keeps the lab reproducible without heavy deps.
 
 ---
 
 ## Metrics (from a real run)
 
-Experiment config: Adult subsample **n=2,000** → train **1,500** / holdout **500**; synth size = train size; probe = balanced **LogisticRegression**; seed **42**.
+Config: Adult subsample **n=2,000** → train **1,500** / holdout **500**; probe = balanced **LogisticRegression**; seed **42**.
 
 ### Baseline (train on real → test on real holdout)
 
@@ -98,7 +94,7 @@ Experiment config: Adult subsample **n=2,000** → train **1,500** / holdout **5
 | Fallback MVN | 1.00 | 0.570 | 0.835 | 2.197 | 0.399 |
 | Fallback MVN | 1.50 | **0.588** | **0.838** | 2.748 | 0.433 |
 
-**Takeaway:** GaussianCopula preserves **ranking utility** (AUC ≈ 96% of real) with **higher DCR** (harder nearest-neighbor copies) and MIA AUC near chance. The fallback recovers **F1 close to real** but sits closer to the training manifold (lower DCR) — a classic utility–privacy tradeoff.
+**Takeaway:** GaussianCopula preserves **ranking utility** (AUC ≈ 96% of real) with **higher DCR** and MIA near chance. Fallback recovers **F1 close to real** but sits closer to the training manifold (lower DCR).
 
 Full tables: [`reports/metrics.csv`](reports/metrics.csv), [`reports/metrics.json`](reports/metrics.json).
 
@@ -116,41 +112,20 @@ Full tables: [`reports/metrics.csv`](reports/metrics.csv), [`reports/metrics.jso
 
 ![Target balance](figures/target_balance.svg)
 
----
-
-## Project layout
-
-```
-synthetic-data-studio/
-├── app/streamlit_app.py       # Dashboard
-├── src/
-│   ├── data.py                # Download / load / encode Adult
-│   ├── generators.py          # SDV + FallbackHistogramMVN
-│   ├── utility.py             # TSTR metrics
-│   ├── privacy.py             # DCR + membership inference
-│   ├── evaluate.py            # Sweep orchestration
-│   └── plotting.py            # SVG figures
-├── scripts/
-│   ├── download_data.py
-│   └── run_experiment.py
-├── data/raw/adult_sample.csv  # Tiny committed sample
-├── figures/                   # SVG outputs
-├── reports/                   # metrics.csv / metrics.json
-└── outputs/                   # synthetic previews
-```
+*(Repo SVGs are metric-annotated summaries; `run_experiment.py` also writes full matplotlib SVGs locally.)*
 
 ---
 
-## Privacy caveats (please read)
+## Privacy caveats
 
-1. **Not DP.** DCR and MIA AUC are heuristic risk *indicators*. They do not bound adversary advantage the way ε-differential privacy does.
-2. **Near-duplicates & rares.** Low DCR tails and rare categorical combos can still re-identify.
-3. **Attack model matters.** Our MIA uses distance-to-synth as a score — stronger attacks (shadow models, calibrated likelihood) may do better.
-4. **Dataset-specific.** Numbers above are for this Adult subsample and probe model only.
-5. **Governance.** Treat synthetic extracts of sensitive sources as potentially identifying until a formal review says otherwise.
+1. **Not DP.** DCR and MIA AUC are heuristic indicators, not ε-DP.
+2. Near-duplicates and rare categories can still leak.
+3. Stronger attacks may exceed our simple distance-based MIA.
+4. Numbers are for this Adult subsample and probe only.
+5. Treat synth from sensitive sources as potentially identifying until reviewed.
 
 ---
 
 ## License
 
-MIT — portfolio / educational lab. Adult data retains its original UCI/OpenML terms.
+MIT — portfolio / educational lab. Adult data retains UCI/OpenML terms.
